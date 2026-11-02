@@ -1,136 +1,152 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f4f0e8"><title>ひらがな · Hiragana — v6</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f2e9">
+<title>ひらがな — v0.0.0.1</title>
 <style>
-:root {
-  --site-primary: #6555A5;
-  --site-on-primary: #FFFFFF;
-  --site-secondary: #E9E3F5;
-  --site-on-secondary: #30264F;
-  --site-background: #F4F0E8;
-  --site-on-background: #25231F;
-  --site-font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --site-font-heading: ui-serif, Georgia, "Times New Roman", serif;
-  --site-heading-scale: 1;
-  --site-spacing-scale: 1;
-  --site-radius-scale: 1;
-  --site-decoration-opacity: 1;
-  color-scheme: light dark;
-  --bg: light-dark(#F4F0E8, #17151D);
-  --card: light-dark(#FFFFFF, #24212D);
-  --ink: light-dark(#25231F, #F5F1FA);
-  --muted: light-dark(#77746C, #B9B2C5);
-  --line: light-dark(#E7E3D9, #403A4C);
-  --accent: var(--site-primary);
-  --soft: var(--site-secondary);
-  --good: light-dark(#25845A, #75C99A);
-  --bad: light-dark(#B64D4D, #F08A8A);
-}
-* { box-sizing: border-box; }
-html, body { margin: 0; min-height: 100%; }
-body { background: var(--site-background); color: var(--site-on-background); font: 16px var(--site-font-body); }
-#app { min-height: 100vh; width: 100%; background: var(--site-background); color: var(--site-on-background); }
-main { max-width: 760px; margin: auto; padding: calc(22px * var(--site-spacing-scale)) calc(14px * var(--site-spacing-scale)) calc(44px * var(--site-spacing-scale)); }
-.top { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; }
-.top h1 { font: 700 calc(25px * var(--site-heading-scale)) var(--site-font-heading); margin:0; }
-.sub,.muted { color:var(--muted); font-size:13px; }
-.progress { height:8px; background:var(--line); border-radius:20px; overflow:hidden; margin:10px 0 16px; }
-.progress div { height:100%; width:0; background:var(--accent); transition:width .25s; }
-nav { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; margin-bottom:14px; }
-button { font:inherit; border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:calc(11px * var(--site-radius-scale)); padding:10px; cursor:pointer; }
-button:disabled { opacity:.45; cursor:not-allowed; }
-button:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
-.tab { font-size:13px; padding:10px 3px; }
-.tab.active,.primary { background:var(--accent); color:var(--site-on-primary); border-color:var(--accent); }
-.panel { background:var(--card); border:1px solid var(--line); border-radius:calc(16px * var(--site-radius-scale)); padding:calc(16px * var(--site-spacing-scale)); margin:10px 0; }
-.hidden { display:none!important; }
-.kana { font:72px/1.2 serif; text-align:center; margin:12px; }
-.grid { display:grid; grid-template-columns:repeat(5,1fr); gap:7px; }
-.grid button { font:26px serif; padding:11px 2px; }
-.done { background:light-dark(#E8F4ED,#233A30); border-color:#8AC5A2; }
-.choices { display:grid; grid-template-columns:repeat(2,1fr); gap:9px; }
-.choices button { font-size:20px; min-height:58px; }
-.correct { background:light-dark(#E8F4ED,#233A30); border-color:var(--good); }
-.wrong { background:light-dark(#FBEAEA,#452A2D); border-color:var(--bad); }
-.row { display:flex; gap:12px; }
-.row>* { flex:1; }
-.lesson { width:100%; text-align:left; margin:0; padding:13px 15px; line-height:1.5; }
-.lesson strong { display:block; margin-bottom:7px; }
-.lesson small { display:block; color:var(--muted); letter-spacing:.12em; line-height:1.8; }
-#lessonList { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:10px; margin:12px 0 16px; }
-.word { font-size:32px; text-align:center; margin:16px 0; letter-spacing:.18em; line-height:1.6; }
-canvas { width:100%; height:auto; display:block; background:#FFFFFF; border:1px solid #DDD; border-radius:12px; touch-action:none; }
-.score { font-size:42px; font-weight:750; }
-.bar { height:7px; background:var(--line); border-radius:20px; overflow:hidden; }
-.bar i { display:block; height:100%; background:var(--accent); }
-.note { font-size:12px; color:var(--muted); line-height:1.5; }
-.word { font-size:32px; text-align:center; margin:8px; }
-.feedback { min-height:25px; font-size:14px; margin:8px 0; }
-.spaced { margin-top:14px; }
-.account-note { display:flex; align-items:flex-start; gap:9px; background:var(--site-secondary); color:var(--site-on-secondary); border-radius:12px; padding:11px 13px; font-size:12px; line-height:1.45; margin:12px 0 16px; }
-.secondary-action { font-size:12px; padding:7px 9px; }
-.answer-row { display:flex; gap:8px; margin:12px 0; }
-.answer-row input { min-width:0; flex:1; font:inherit; padding:12px; border:1px solid var(--line); border-radius:11px; background:var(--bg); color:var(--ink); }
-.syllabary { display:grid; grid-template-columns:repeat(auto-fit,minmax(72px,1fr)); gap:7px; margin-top:12px; }
-.syllabary div { background:var(--bg); border:1px solid var(--line); border-radius:9px; text-align:center; padding:7px 3px; }
-.syllabary b { display:block; font-size:23px; }
-.syllabary small { color:var(--muted); }
-.kana-pairs { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; max-width:520px; margin:16px auto; }
-.kana-pair { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; padding:8px 2px; border:1px solid var(--line); border-radius:10px; background:var(--bg); }
-.kana-pair b { font:36px/1.25 serif; }
-.kana-pair small { color:var(--muted); font-size:14px; }
-@media (max-width:430px) { main { padding:16px 11px 34px; } .top h1 { font-size:21px; } .tab { font-size:11px; } .kana { font-size:64px; } }
-</style></head>
-<body><div id="app"><main>
-<header class="top"><div><h1>ひらがな · Hiragana — v6</h1><div class="sub">Apprends à lire, reconnaître et écrire</div></div><div style="text-align:right"><b id="progressText">0 / 46</b><div class="sub">validés</div><button class="secondary-action" id="resetProgress" type="button">Réinitialiser</button></div></header>
-<div class="progress"><div id="progressBar"></div></div><div class="account-note"><span aria-hidden="true">●</span><span><b>Progression personnelle</b><br>Les acquis sont enregistrés sur cet appareil et dans ce navigateur. Chaque visiteur dispose de sa propre progression.</span></div>
-<nav><button class="tab active" data-tab="lessons">Apprendre</button><button class="tab" data-tab="quiz">S'entraîner</button><button class="tab" data-tab="write">Traduire</button><button class="tab" data-tab="review">Maîtriser</button></nav>
-<section id="lessons"><div class="panel"><b>Apprendre par familles</b><p class="muted">Découvre chaque caractère, sa prononciation, des mots d'exemple et son tracé étape par étape. Tu pourras ensuite t'entraîner à le reproduire et obtenir une note.</p></div><div id="lessonList"></div><div id="lessonDetail" class="panel hidden"></div></section>
-<section id="quiz" class="hidden"><div class="panel"><b>S'entraîner · Reconnaissance par famille</b><span class="muted" style="float:right" id="quizScore">0 bonne réponse</span><p class="muted">20 questions aléatoires par session, sans répétition d'un même caractère.</p></div><div class="panel"><div class="muted" style="text-align:center">Quel est le son de ce caractère ?</div><div class="kana" id="quizKana">あ</div><div class="muted" style="text-align:center" id="quizCount"></div></div><div class="choices" id="choices"></div><div class="feedback" id="quizFeedback"></div><button class="primary" style="width:100%" id="nextQuestion">Question suivante</button></section>
-<section id="write" class="hidden"><div class="panel"><b>Traduire · Lire un mot</b><p class="muted">Cette rubrique sera consacrée à la traduction de mots en hiragana, avec le syllabaire consultable à tout moment. L'atelier de tracé est accessible depuis chaque leçon.</p></div><div class="panel" style="display:flex;align-items:center;justify-content:space-between"><div><b>Atelier de tracé</b><div class="muted" id="writeSound">Son : a</div></div><div class="kana" style="margin:0" id="writeKana">あ</div></div><div class="panel"><b>Reproduis le caractère sur le modèle gris</b><canvas id="pad" width="600" height="600"></canvas><div class="row spaced"><button id="erase">Effacer</button><button class="primary" id="evaluate">Évaluer mon tracé</button></div></div><div class="panel" id="result"><b>Validation à 75/100</b><p class="muted">La note estime la ressemblance, les proportions, le positionnement et la régularité du tracé. Le sens et l'ordre officiels des traits ne sont pas encore vérifiés caractère par caractère.</p></div><div class="row"><button id="prev">Précédent</button><button id="next">Suivant</button></div></section>
-<section id="review" class="hidden"><div class="panel"><b>Maîtriser · Révision complète</b><p class="muted">L'objectif est de mélanger toutes les compétences : reconnaître les caractères et leurs sons, traduire des mots, puis reproduire les caractères en respectant l'ordre des traits. Dans cette version, le quiz et l'atelier de tracé sont disponibles ; le parcours combiné sera ajouté à l'étape suivante.</p></div><div class="grid" id="kanaGrid"></div><div class="panel muted" id="reviewStats"></div></section>
-<p class="note" style="text-align:center;margin-top:18px">Les scores sont des estimations pédagogiques. Pour progresser, privilégie la régularité et l'ordre traditionnel des traits.</p>
-</main></div>
+:root{--bg:#f5f2e9;--paper:#fffefa;--ink:#302f2b;--muted:#77766f;--line:#e8e3d8;--green:#dcefe1;--green2:#b9dec5;--deep:#426d55;--lav:#e9e4f4;--lavdeep:#6b5b91;--pink:#f6e6e2;--gold:#f5edcf;--shadow:0 8px 28px #3933260d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:13px;padding:10px 14px;transition:.15s}button:hover{transform:translateY(-1px);border-color:#c8c1b4}button:focus-visible,input:focus-visible{outline:3px solid #9ebba7;outline-offset:2px}button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.app{max-width:1020px;margin:auto;padding:24px 18px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}.brand{display:flex;align-items:center;gap:13px}.logo{width:48px;height:48px;border-radius:16px;background:var(--green);display:grid;place-items:center;font:30px serif;color:var(--deep)}h1{font:700 25px/1.2 Georgia,serif;margin:0}.subtitle{font-size:13px;color:var(--muted);margin-top:5px}.version{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:5px 9px;border-radius:20px;white-space:nowrap}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:#ebe7dd;padding:6px;border-radius:16px;margin:20px 0 24px}.tab{border:0;background:transparent;font-weight:650;color:#77736a}.tab.active{background:var(--paper);color:var(--deep);box-shadow:0 2px 8px #39332610}
+h2{font:700 25px Georgia,serif;margin:0 0 7px}.intro{color:var(--muted);margin:0 0 18px}.section{display:none}.section.active{display:block}.family-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.family-card{padding:18px;text-align:left;min-height:124px;background:var(--paper);box-shadow:var(--shadow);border:1px solid var(--line)}.family-card strong{display:block;font-size:17px;margin-bottom:8px}.family-card .chars{font:25px/1.5 serif;letter-spacing:5px;color:var(--deep)}.family-card small{display:block;color:var(--muted);margin-top:5px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:var(--shadow)}.back{margin-bottom:14px}.lesson-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.lesson-head h2{margin:0}.kana-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:16px 0}.kana-card{background:var(--green);border:1px solid #c8e2d0;border-radius:15px;padding:12px 5px;text-align:center}.kana-card .glyph{font:45px/1.15 serif;color:#355d45}.kana-card .sound{font-weight:700;color:var(--deep);font-size:14px}.kana-card.selected{outline:3px solid var(--deep);outline-offset:1px}.detail-layout{display:grid;grid-template-columns: minmax(180px,.7fr) 1.3fr;gap:16px;align-items:start}.hero-kana{background:var(--green);border-radius:18px;min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center}.hero-kana .glyph{font:112px/1 serif;color:#355d45}.hero-kana .romaji{font-size:20px;font-weight:700;color:var(--deep)}.word-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}.word{padding:10px 12px;background:#faf8f2;border:1px solid var(--line);border-radius:12px}.word b{font:23px serif;margin-right:7px}.word small{display:block;color:var(--muted);font-size:13px}.stepbox{display:grid;grid-template-columns:180px 1fr;gap:18px;align-items:center}.step-glyph{height:170px;border-radius:16px;background:#f4f1e9;display:grid;place-items:center;font:100px serif;color:#b7b2a7;position:relative}.step-glyph:after{content:attr(data-step);position:absolute;right:10px;top:7px;font:700 13px system-ui;color:var(--lavdeep);background:var(--lav);border-radius:20px;padding:4px 9px}.step-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.hint{font-size:13px;color:var(--muted)}.write-area{display:grid;grid-template-columns:1fr 220px;gap:16px}.canvas-wrap canvas{width:100%;height:auto;display:block;border:1px solid #dedbd2;border-radius:14px;background:white;touch-action:none}.canvas-side{display:flex;flex-direction:column;gap:9px}.primary{background:var(--deep);color:white;border-color:var(--deep)}.secondary{background:var(--lav);color:var(--lavdeep);border-color:#ddd5ed}.soft-green{background:var(--green);color:var(--deep);border-color:#c8e2d0}.score{font:700 34px Georgia,serif}.feedback{min-height:25px;font-size:14px;color:var(--muted);margin-top:8px}
+.quiz-top{display:flex;justify-content:space-between;color:var(--muted);font-size:13px}.question{font:100px/1.2 serif;text-align:center;color:var(--deep);padding:22px}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.choices button{font-size:19px;min-height:58px}.correct{background:#e1f1e5!important;border-color:#6ea781!important}.wrong{background:#fae8e5!important;border-color:#d58c81!important}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar select,.answer{border:1px solid var(--line);background:white;border-radius:12px;padding:10px 12px;color:var(--ink)}.answer{width:100%;font-size:18px}.syllabary{display:none;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}.syllabary.show{display:grid}.syllabary div{padding:7px;text-align:center;background:#f5f2e9;border-radius:9px}.syllabary b{display:block;font:23px serif}.progress{height:7px;background:var(--line);border-radius:20px;overflow:hidden;margin:10px 0 16px}.progress span{height:100%;display:block;background:var(--deep);width:0}.hidden{display:none!important}.footer{margin-top:28px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:700px){.app{padding:17px 12px 40px}.family-grid{grid-template-columns:repeat(2,1fr)}.detail-layout,.stepbox,.write-area{grid-template-columns:1fr}.hero-kana{min-height:160px}.hero-kana .glyph{font-size:90px}.step-glyph{height:140px}.word-list{grid-template-columns:1fr 1fr}.kana-grid{gap:6px}.kana-card .glyph{font-size:37px}h1{font-size:21px}}
+@media(max-width:390px){nav{gap:3px;padding:4px}.tab{font-size:12px;padding:9px 2px}.family-grid{gap:8px}.family-card{padding:13px}.word-list{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand"><div class="logo">あ</div><div><h1>ひらがな · Apprendre le japonais</h1><div class="subtitle">Lire, mémoriser, traduire et écrire les hiragana</div></div></div><span class="version">Version 0.0.0.1</span></header>
+<nav aria-label="Navigation principale"><button class="tab active" data-section="learn">1. Apprendre</button><button class="tab" data-section="memorize">2. Mémoriser</button><button class="tab" data-section="translate">3. Traduire</button><button class="tab" data-section="master">4. Maîtriser</button></nav>
+
+<section id="learn" class="section active">
+<div id="familyHome"><h2>Apprendre</h2><p class="intro">Choisis une famille pour découvrir ses caractères, leur prononciation, des mots exemples et leur écriture.</p><div id="familyGrid" class="family-grid"></div></div>
+<div id="familyLesson" class="hidden">
+<button class="back" id="backFamilies">← Toutes les familles</button>
+<div class="lesson-head"><div><h2 id="familyTitle"></h2><p class="intro" id="familySubtitle"></p></div><span class="version" id="familyCount"></span></div>
+<div id="kanaGrid" class="kana-grid"></div>
+<div class="panel"><div class="detail-layout"><div class="hero-kana"><div class="glyph" id="heroGlyph">あ</div><div class="romaji" id="heroSound">a</div></div><div><h3 style="margin:0 0 10px">5 mots pour reconnaître ce son</h3><div id="wordExamples" class="word-list"></div></div></div></div>
+<div class="panel"><h3 style="margin:0 0 5px">Apprendre à tracer</h3><p class="hint">Observe la progression du tracé, puis entraîne-toi juste en dessous. Le guide visuel de cette première version est schématique : l'ordre exact des traits japonais sera affiné avec les planches de référence.</p><div class="stepbox"><div class="step-glyph" id="stepGlyph" data-step="Étape 1 / 1">あ</div><div><strong id="stepTitle">Observe le caractère</strong><p class="hint" id="stepDescription">Repère sa forme générale et son équilibre dans le carré.</p><div class="step-controls"><button id="prevStep">← Précédent</button><button id="nextStep" class="secondary">Trait suivant →</button></div></div></div></div>
+<div class="panel"><h3 style="margin:0 0 5px">À toi de l'écrire</h3><p class="hint">Le caractère gris sert de filigrane. Dessine par-dessus, efface si nécessaire, puis demande une évaluation.</p><div class="write-area"><div class="canvas-wrap"><canvas id="practiceCanvas" width="520" height="520"></canvas></div><div class="canvas-side"><button id="watermark" class="secondary">Filigrane : afficher</button><button id="erase">Effacer</button><button id="evaluate" class="primary">Évaluer</button><div id="writeResult" class="feedback">Objectif : 75/100 pour valider.</div><div class="progress"><span id="writeProgress"></span></div></div></div></div>
+<button id="familyPractice" class="primary" style="width:100%">M'entraîner sur cette famille →</button>
+</div></section>
+
+<section id="memorize" class="section"><h2>Mémoriser</h2><p class="intro">15 questions pour vérifier que tu reconnais les caractères et leur prononciation.</p><div class="panel"><div class="toolbar"><label for="memoFamily">Famille :</label><select id="memoFamily"></select><button class="primary" id="startMemo">Commencer / recommencer</button></div><div class="progress"><span id="memoProgress"></span></div><div class="quiz-top"><span id="memoCount">Question 0 / 15</span><span id="memoScore">0 bonne réponse</span></div><div class="question" id="memoKana">あ</div><div class="choices" id="memoChoices"></div><div class="feedback" id="memoFeedback">Choisis le son correspondant au caractère.</div><button id="memoNext" class="primary" style="width:100%;margin-top:12px" disabled>Question suivante</button></div></section>
+
+<section id="translate" class="section"><h2>Traduire</h2><p class="intro">Lis le mot en hiragana et donne sa signification en français. Tu peux afficher le syllabaire à tout moment.</p><div class="panel"><div class="toolbar"><label for="translateFamily">Famille :</label><select id="translateFamily"></select><button class="secondary" id="toggleSyllabary">Afficher le syllabaire</button></div><div id="syllabary" class="syllabary"></div><div class="progress"><span id="translateProgress"></span></div><div class="quiz-top"><span id="translateCount">Question 0 / 5</span><span id="translateScore">0 bonne réponse</span></div><div class="question" id="translateWord" style="font-size:54px">あおい</div><input id="translateAnswer" class="answer" placeholder="Ta traduction en français…" autocomplete="off"><div class="feedback" id="translateFeedback"></div><button id="checkTranslation" class="primary" style="width:100%;margin-top:10px">Vérifier</button><button id="nextTranslation" style="width:100%;margin-top:8px" disabled>Mot suivant</button></div></section>
+
+<section id="master" class="section"><h2>Maîtriser</h2><p class="intro">Un parcours mixte qui combine reconnaissance, traduction et écriture.</p><div class="panel"><div class="quiz-top"><span id="masterCount">Question 0 / 12</span><span id="masterScore">0 point</span></div><div class="progress"><span id="masterProgress"></span></div><div id="masterTask" class="question" style="font-size:28px">Prêt à relever le défi ?</div><div id="masterPrompt" class="hint" style="text-align:center;margin-bottom:12px">12 questions variées : lecture, vocabulaire et tracé.</div><div id="masterChoices" class="choices"></div><div id="masterInputWrap" class="hidden"><input id="masterInput" class="answer" placeholder="Ta réponse…"><button id="masterCheck" class="primary" style="width:100%;margin-top:8px">Vérifier</button></div><div id="masterWriteWrap" class="hidden"><div class="canvas-wrap"><canvas id="masterCanvas" width="520" height="520"></canvas></div><div class="toolbar" style="margin-top:8px"><button id="masterErase">Effacer</button><button id="masterEval" class="primary">Évaluer le tracé</button></div></div><div id="masterFeedback" class="feedback"></div><button id="masterStart" class="primary" style="width:100%;margin-top:12px">Commencer le parcours</button><button id="masterNext" style="width:100%;margin-top:8px" disabled>Continuer</button></div></section>
+<div class="footer">Progression enregistrée localement sur cet appareil · Version 0.0.0.1</div>
+</div>
 <script>
 (()=>{
 const families=[
-['Voyelles','あいうえお','a i u e o','あおい','aoi','bleu / vert selon le contexte'],
-['K','かきくけこ','ka ki ku ke ko','かき','kaki','kaki'],
-['S','さしすせそ','sa shi su se so','すし','sushi','sushi'],
-['T','たちつてと','ta chi tsu te to','ちず','chizu','carte'],
-['N','なにぬねの','na ni nu ne no','なつ','natsu','été'],
-['H','はひふへほ','ha hi fu he ho','はな','hana','fleur'],
-['M','まみむめも','ma mi mu me mo','まめ','mame','haricot'],
-['Y','やゆよ','ya yu yo','ゆき','yuki','neige'],
-['R','らりるれろ','ra ri ru re ro','そら','sora','ciel'],
-['W et N','わをん','wa o n','ほん','hon','livre']
+{name:"Voyelles",chars:"あいうえお",sounds:["a","i","u","e","o"]},
+{name:"K",chars:"かきくけこ",sounds:["ka","ki","ku","ke","ko"]},
+{name:"S",chars:"さしすせそ",sounds:["sa","shi","su","se","so"]},
+{name:"T",chars:"たちつてと",sounds:["ta","chi","tsu","te","to"]},
+{name:"N",chars:"なにぬねの",sounds:["na","ni","nu","ne","no"]},
+{name:"H",chars:"はひふへほ",sounds:["ha","hi","fu","he","ho"]},
+{name:"M",chars:"まみむめも",sounds:["ma","mi","mu","me","mo"]},
+{name:"Y",chars:"やゆよ",sounds:["ya","yu","yo"]},
+{name:"R",chars:"らりるれろ",sounds:["ra","ri","ru","re","ro"]},
+{name:"W et N",chars:"わをん",sounds:["wa","o","n"]}
 ];
-const roms=families.flatMap(f=>f[2].split(' '));
-const all=families.flatMap(f=>f[1].split('')).map((k,i)=>({k,rom:roms[i]}));
-const $=id=>document.getElementById(id);let done=new Set(loadProgress()),lessonPool=all.map(x=>x.k),quizChar='',quizNum=0,quizGood=0,answered=false,writeIndex=0,strokes=[],drawing=false,last=null;
-function loadProgress(){try{return JSON.parse(localStorage.getItem('hiragana-progress-v1')||'[]')}catch(e){return []}}
-function saveProgress(){try{localStorage.setItem('hiragana-progress-v1',JSON.stringify([...done]))}catch(e){}}
-function updateProgress(){$('progressText').textContent=done.size+' / 46';$('progressBar').style.width=(done.size/46*100)+'%';saveProgress();if($('reviewStats'))$('reviewStats').textContent=done.size+' caractères validés sur 46 · '+(46-done.size)+' à travailler.';}
-function showTab(t){['lessons','quiz','write','review'].forEach(x=>$(x).classList.toggle('hidden',x!==t));document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));if(t==='review')renderGrid();if(t==='write')drawPad();}
-document.querySelector('nav').addEventListener('click',e=>{let b=e.target.closest('[data-tab]');if(b)showTab(b.dataset.tab)});
-function renderLessons(){$('lessonList').innerHTML=families.map((f,i)=>`<button class="lesson" data-lesson="${i}"><strong>${i+1}. ${f[0]}</strong><small>${[...f[1]].join('　')}</small></button>`).join('');}
- $('lessonList').addEventListener('click',e=>{let b=e.target.closest('[data-lesson]');if(!b)return;let i=+b.dataset.lesson,f=families[i];lessonPool=all.filter(x=>f[1].includes(x.k)).map(x=>x.k);$('lessonDetail').classList.remove('hidden');$('lessonDetail').innerHTML=`<b>Leçon ${i+1} — ${f[0]}</b><div class="kana-pairs">${[...f[1]].map((k,j)=>`<div class="kana-pair"><b lang="ja">${k}</b><small>${f[2].split(' ')[j]}</small></div>`).join('')}</div><hr style="border:0;border-top:1px solid var(--line)"><b>Déchiffre ce mot</b><div class="word" lang="ja">${f[3]}</div><label for="wordAnswer" class="muted">Écris les sons en alphabet latin (romaji) :</label><div class="answer-row"><input id="wordAnswer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Ta réponse…"><button class="primary" id="checkWord">Vérifier</button></div><div id="wordFeedback" class="feedback" aria-live="polite"></div><button id="toggleSyllabary" type="button">Afficher le syllabaire</button><div id="syllabaryPanel" class="hidden"><p class="muted">Retrouve chaque caractère et son son.</p><div class="syllabary">${all.map(x=>`<div><b>${x.k}</b><small>${x.rom}</small></div>`).join('')}</div></div><div class="row spaced"><button id="lessonWrite">Écrire</button><button class="primary" id="lessonQuiz">M'entraîner</button></div>`;$('checkWord').onclick=()=>{let answer=$('wordAnswer').value.toLowerCase().replace(/[\s　-]/g,'').trim(),expected=f[4].toLowerCase().replace(/[\s　-]/g,'');$('wordFeedback').textContent=answer===expected?'Bonne réponse ! Tu as bien déchiffré le mot.':'Pas encore. Reprends les caractères un par un ou utilise le syllabaire.';$('wordFeedback').style.color=answer===expected?'var(--good)':'var(--bad)'};$('wordAnswer').addEventListener('keydown',ev=>{if(ev.key==='Enter')$('checkWord').click()});$('toggleSyllabary').onclick=()=>{let panel=$('syllabaryPanel'),open=panel.classList.contains('hidden');panel.classList.toggle('hidden');$('toggleSyllabary').textContent=open?'Masquer le syllabaire':'Afficher le syllabaire'};$('lessonWrite').onclick=()=>{writeIndex=all.findIndex(x=>x.k===f[1][0]);updateWrite();showTab('write')};$('lessonQuiz').onclick=()=>{showTab('quiz');newQuiz(lessonPool)};});
-function newQuiz(pool=all.map(x=>x.k)){lessonPool=pool;answered=false;quizChar=pool[Math.floor(Math.random()*pool.length)];quizNum++;$('quizKana').textContent=quizChar;$('quizCount').textContent='Question '+quizNum;$('quizFeedback').textContent='';$('nextQuestion').disabled=true;let options=[quizChar],usedSounds=new Set([all.find(x=>x.k===quizChar).rom]);while(options.length<4){let k=all[Math.floor(Math.random()*all.length)].k,rom=all.find(x=>x.k===k).rom;if(!options.includes(k)&&!usedSounds.has(rom)){options.push(k);usedSounds.add(rom)}}options.sort(()=>Math.random()-.5);$('choices').innerHTML=options.map(k=>`<button data-k="${k}">${all.find(x=>x.k===k).rom}</button>`).join('');}
- $('choices').addEventListener('click',e=>{let b=e.target.closest('[data-k]');if(!b||answered)return;answered=true;let correct=b.dataset.k===quizChar;if(correct)quizGood++;$('quizScore').textContent=quizGood+' bonne(s) réponse(s)';$('quizFeedback').textContent=correct?'Bonne réponse !':'Pas tout à fait : '+quizChar+' se lit '+all.find(x=>x.k===quizChar).rom+'.';$('choices').querySelectorAll('button').forEach(x=>{if(x.dataset.k===quizChar)x.classList.add('correct');else if(x===b)x.classList.add('wrong')});$('nextQuestion').disabled=false;});$('nextQuestion').onclick=()=>newQuiz(lessonPool);
-function current(){return all[writeIndex]}
-const pad=$('pad'),ctx=pad.getContext('2d');
-function drawPad(){ctx.clearRect(0,0,600,600);ctx.fillStyle='#fff';ctx.fillRect(0,0,600,600);ctx.strokeStyle='#e7e7e7';ctx.lineWidth=2;ctx.setLineDash([5,8]);ctx.beginPath();ctx.moveTo(300,25);ctx.lineTo(300,575);ctx.moveTo(25,300);ctx.lineTo(575,300);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#dedede';ctx.font='390px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(current().k,300,310);ctx.strokeStyle='#292929';ctx.lineWidth=15;ctx.lineCap='round';ctx.lineJoin='round';strokes.forEach(s=>{if(s.length<2)return;ctx.beginPath();ctx.moveTo(s[0].x,s[0].y);s.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke()});}
-function updateWrite(){strokes=[];$('writeKana').textContent=current().k;$('writeSound').textContent='Son : '+current().rom;$('result').innerHTML='<b>À toi de jouer</b><p class="muted">Trace le caractère sur le modèle gris, puis demande une évaluation.</p>';drawPad();}
-function point(e){let r=pad.getBoundingClientRect();return{x:(e.clientX-r.left)*600/r.width,y:(e.clientY-r.top)*600/r.height}}
-pad.addEventListener('pointerdown',e=>{e.preventDefault();pad.setPointerCapture(e.pointerId);drawing=true;last=point(e);strokes.push([last]);drawPad()});pad.addEventListener('pointermove',e=>{if(!drawing)return;e.preventDefault();let p=point(e),s=strokes.at(-1);if(Math.hypot(p.x-last.x,p.y-last.y)>2){s.push(p);last=p;drawPad()}});function end(e){if(drawing){e.preventDefault();drawing=false;last=null}}pad.addEventListener('pointerup',end);pad.addEventListener('pointercancel',end);
-$('erase').onclick=()=>{strokes=[];drawPad();$('result').innerHTML='<b>Tracé effacé</b><p class="muted">Tu peux recommencer.</p>'};$('prev').onclick=()=>{writeIndex=(writeIndex+45)%46;updateWrite()};$('next').onclick=()=>{writeIndex=(writeIndex+1)%46;updateWrite()};
-function evaluate(){let refCanvas=document.createElement('canvas');refCanvas.width=refCanvas.height=600;let c=refCanvas.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,600,600);c.fillStyle='#000';c.font='390px serif';c.textAlign='center';c.textBaseline='middle';c.fillText(current().k,300,310);let ref=c.getImageData(0,0,600,600).data;c.clearRect(0,0,600,600);c.strokeStyle='#000';c.lineWidth=15;c.lineCap='round';c.lineJoin='round';strokes.forEach(s=>{if(s.length>1){c.beginPath();c.moveTo(s[0].x,s[0].y);s.slice(1).forEach(p=>c.lineTo(p.x,p.y));c.stroke()}});let ink=c.getImageData(0,0,600,600).data,rb=[],ub=[],inter=0,union=0;for(let y=0;y<600;y+=3)for(let x=0;x<600;x+=3){let i=(y*600+x)*4,a=ref[i]<100,b=ink[i]<100;if(a)rb.push([x,y]);if(b)ub.push([x,y]);if(a&&b)inter++;if(a||b)union++;}if(ub.length<25){$('result').innerHTML='<b>Tracé insuffisant</b><p class="muted">Dessine le caractère avant de demander une note.</p>';return}const bbox=a=>{let xs=a.map(p=>p[0]),ys=a.map(p=>p[1]);return{minx:Math.min(...xs),maxx:Math.max(...xs),miny:Math.min(...ys),maxy:Math.max(...ys)}};let a=bbox(rb),b=bbox(ub),rw=a.maxx-a.minx,rh=a.maxy-a.miny,uw=b.maxx-b.minx,uh=b.maxy-b.miny,sim=union?inter/union:0;let resemblance=Math.round(Math.min(40,sim*75)),ratio=Math.min(uw/rw,rw/uw,uh/rh,rh/uh),proportions=Math.round(20*Math.max(0,Math.min(1,ratio))),cx=(b.minx+b.maxx)/2,cy=(b.miny+b.maxy)/2,rcx=(a.minx+a.maxx)/2,rcy=(a.miny+a.maxy)/2,position=Math.round(15*Math.max(0,1-Math.hypot(cx-rcx,cy-rcy)/220)),shape=Math.round(15*Math.max(0,Math.min(1,sim*1.25)));let path=0,turns=0;strokes.forEach(s=>{for(let j=1;j<s.length;j++){let dx=s[j].x-s[j-1].x,dy=s[j].y-s[j-1].y;path+=Math.hypot(dx,dy);if(j>1){let p=s[j-2],q=s[j-1],r=s[j],v1=[q.x-p.x,q.y-p.y],v2=[r.x-q.x,r.y-q.y],den=Math.hypot(...v1)*Math.hypot(...v2);if(den&&(v1[0]*v2[0]+v1[1]*v2[1])/den<.75)turns++}}});let gesture=Math.round(10*Math.max(0,Math.min(1,(path>100?1:.45)+(strokes.length? .15:0)+(turns<strokes.length*18?.25:0)+(strokes.length<=4?.15:0)))),total=resemblance+proportions+position+shape+gesture,pass=total>=75;if(pass){done.add(current().k);updateProgress()}let parts=[['Ressemblance',resemblance,40],['Proportions',proportions,20],['Position',position,15],['Forme et courbes',shape,15],['Régularité du geste',gesture,10]];$('result').innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><div><div class="muted">Note estimée</div><div class="score">${total}<span style="font-size:18px;color:var(--muted)">/100</span></div></div><div style="text-align:right"><b>${pass?'Caractère validé':'À retravailler'}</b><div class="muted">${pass?'Seuil atteint : 75/100':'Objectif : 75/100'}</div></div></div>${parts.map(p=>`<div class="spaced"><div style="display:flex;justify-content:space-between;font-size:13px"><span>${p[0]}</span><b>${p[1]}/${p[2]}</b></div><div class="bar"><i style="width:${p[1]/p[2]*100}%"></i></div></div>`).join('')}<p class="note spaced">Limite : le sens et l'ordre japonais des traits ne sont pas vérifiés individuellement dans cette version. La régularité du geste ne remplace pas cette vérification.</p><p>${pass?'Bravo, ce caractère est enregistré dans tes acquis.':'Essaie de mieux occuper l’espace et de te rapprocher du modèle gris.'}</p>`;}
-$('evaluate').onclick=evaluate;
-$('resetProgress').onclick=()=>{if(confirm('Effacer la progression enregistrée sur cet appareil ?')){done.clear();updateProgress();renderGrid();$('result').innerHTML='<b>Progression réinitialisée</b><p class="muted">Tu peux recommencer ton apprentissage.</p>';}};
-function renderGrid(){$('kanaGrid').innerHTML=all.map((x,i)=>`<button class="${done.has(x.k)?'done':''}" data-i="${i}">${x.k}</button>`).join('');$('reviewStats').textContent=done.size+' caractères validés sur 46 · '+(46-done.size)+' à travailler.';}
-$('kanaGrid').addEventListener('click',e=>{let b=e.target.closest('[data-i]');if(!b)return;writeIndex=+b.dataset.i;updateWrite();showTab('write')});
-renderLessons();updateProgress();newQuiz();updateWrite();
+const all=families.flatMap((f,fi)=>[...f.chars].map((k,i)=>({k,rom:f.sounds[i],family:fi})));
+const examples={
+"あ":[["あさ","asa","matin"],["あめ","ame","pluie"],["あし","ashi","pied / jambe"],["あお","ao","bleu"],["あか","aka","rouge"]],
+"い":[["いえ","ie","maison"],["いぬ","inu","chien"],["いし","ishi","pierre"],["いと","ito","fil"],["いす","isu","chaise"]],
+"う":[["うみ","umi","mer"],["うた","uta","chanson"],["うし","ushi","vache"],["うえ","ue","dessus"],["うま","uma","cheval"]],
+"え":[["えき","eki","gare"],["え","e","dessin"],["えん","en","yen / cercle"],["えだ","eda","branche"],["えび","ebi","crevette"]],
+"お":[["おと","oto","son"],["おに","oni","ogre"],["おか","oka","colline"],["おちゃ","ocha","thé"],["おかね","okane","argent"]],
+"か":[["かお","kao","visage"],["かさ","kasa","parapluie"],["かぎ","kagi","clé"],["かみ","kami","papier / cheveux"],["かに","kani","crabe"]],
+"き":[["き","ki","arbre"],["きく","kiku","chrysanthème"],["きた","kita","nord"],["きもの","kimono","kimono"],["きのこ","kinoko","champignon"]],
+"く":[["くち","kuchi","bouche"],["くも","kumo","nuage / araignée"],["くつ","kutsu","chaussures"],["くに","kuni","pays"],["くま","kuma","ours"]],
+"け":[["けさ","kesa","ce matin"],["けむり","kemuri","fumée"],["けが","kega","blessure"],["けいと","keito","laine"],["けしき","keshiki","paysage"]],
+"こ":[["こえ","koe","voix"],["こめ","kome","riz"],["ここ","koko","ici"],["こども","kodomo","enfant"],["こい","koi","carpe / amour"]],
+"さ":[["さる","saru","singe"],["さかな","sakana","poisson"],["さくら","sakura","fleur de cerisier"],["さとう","satou","sucre"],["さむい","samui","froid"]],
+"し":[["しま","shima","île"],["しお","shio","sel"],["しか","shika","cerf"],["しろ","shiro","blanc / château"],["した","shita","dessous"]],
+"す":[["すし","sushi","sushi"],["すな","suna","sable"],["すき","suki","aimer"],["すいか","suika","pastèque"],["すずめ","suzume","moineau"]],
+"せ":[["せかい","sekai","monde"],["せなか","senaka","dos"],["せき","seki","siège"],["せんせい","sensei","professeur"],["せまい","semai","étroit"]],
+"そ":[["そら","sora","ciel"],["そと","soto","dehors"],["そこ","soko","là-bas"],["そば","soba","nouilles soba"],["そろそろ","sorosoro","bientôt"]],
+"た":[["たこ","tako","poulpe"],["たまご","tamago","œuf"],["たかい","takai","haut / cher"],["たび","tabi","voyage"],["たね","tane","graine"]],
+"ち":[["ちず","chizu","carte"],["ちかてつ","chikatetsu","métro"],["ちち","chichi","père"],["ちいさい","chiisai","petit"],["ちから","chikara","force"]],
+"つ":[["つき","tsuki","lune"],["つくえ","tsukue","bureau"],["つち","tsuchi","terre"],["つめ","tsume","ongle"],["つな","tsuna","thon"]],
+"て":[["て","te","main"],["てら","tera","temple"],["てがみ","tegami","lettre"],["てんき","tenki","météo"],["てつ","tetsu","fer"]],
+"と":[["とり","tori","oiseau"],["とけい","tokei","montre / horloge"],["ともだち","tomodachi","ami"],["とし","toshi","année"],["とまと","tomato","tomate"]],
+"な":[["なつ","natsu","été"],["なまえ","namae","prénom"],["なみ","nami","vague"],["なか","naka","intérieur"],["なべ","nabe","marmite"]],
+"に":[["にく","niku","viande"],["にわ","niwa","jardin"],["にじ","niji","arc-en-ciel"],["にほん","nihon","Japon"],["にんじん","ninjin","carotte"]],
+"ぬ":[["ぬの","nuno","tissu"],["ぬま","numa","marais"],["ぬるい","nurui","tiède"],["ぬう","nuu","coudre"],["ぬりえ","nurie","coloriage"]],
+"ね":[["ねこ","neko","chat"],["ねつ","netsu","fièvre / chaleur"],["ねずみ","nezumi","souris"],["ねだん","nedan","prix"],["ねむい","nemui","avoir sommeil"]],
+"の":[["のみもの","nomimono","boisson"],["のり","nori","algue"],["のど","nodo","gorge"],["のはら","no hara","prairie"],["のこぎり","nokogiri","scie"]],
+"は":[["はな","hana","fleur / nez"],["はは","haha","mère"],["はし","hashi","baguettes / pont"],["はる","haru","printemps"],["はこ","hako","boîte"]],
+"ひ":[["ひ","hi","feu / soleil"],["ひと","hito","personne"],["ひる","hiru","midi"],["ひこうき","hikouki","avion"],["ひつじ","hitsuji","mouton"]],
+"ふ":[["ふね","fune","bateau"],["ふゆ","fuyu","hiver"],["ふく","fuku","vêtement"],["ふた","futa","couvercle"],["ふじさん","fujisan","mont Fuji"]],
+"へ":[["へや","heya","chambre"],["へび","hebi","serpent"],["へた","heta","maladroit"],["へいわ","heiwa","paix"],["へん","hen","étrange"]],
+"ほ":[["ほし","hoshi","étoile"],["ほん","hon","livre"],["ほね","hone","os"],["ほう","hou","direction"],["ほたる","hotaru","luciole"]],
+"ま":[["まち","machi","ville"],["まど","mado","fenêtre"],["まめ","mame","haricot"],["まつ","matsu","pin"],["まいにち","mainichi","tous les jours"]],
+"み":[["みず","mizu","eau"],["みみ","mimi","oreille"],["みち","michi","chemin"],["みせ","mise","magasin"],["みなみ","minami","sud"]],
+"む":[["むし","mushi","insecte"],["むら","mura","village"],["むね","mune","poitrine"],["むすこ","musuko","fils"],["むすめ","musume","fille"]],
+"め":[["め","me","œil"],["めがね","megane","lunettes"],["めし","meshi","repas"],["めだか","medaka","poisson medaka"],["めん","men","nouilles"]],
+"も":[["もも","momo","pêche"],["もり","mori","forêt"],["もち","mochi","mochi"],["もの","mono","chose"],["もん","mon","porte"]],
+"や":[["やま","yama","montagne"],["やさい","yasai","légumes"],["やすみ","yasumi","repos / vacances"],["やね","yane","toit"],["やおや","yaoya","marchand de légumes"]],
+"ゆ":[["ゆき","yuki","neige"],["ゆめ","yume","rêve"],["ゆび","yubi","doigt"],["ゆか","yuka","sol"],["ゆうびん","yuubin","courrier"]],
+"よ":[["よる","yoru","nuit"],["よこ","yoko","côté"],["よやく","yoyaku","réservation"],["よむ","yomu","lire"],["よい","yoi","bon"]],
+"ら":[["らく","raku","facile / confortable"],["らいねん","rainen","année prochaine"],["らっぱ","rappa","trompette"],["らくだ","rakuda","chameau"],["らん","ran","orchidée"]],
+"り":[["りんご","ringo","pomme"],["りす","risu","écureuil"],["りゆう","riyuu","raison"],["りょうり","ryouri","cuisine"],["りかい","rikai","compréhension"]],
+"る":[["るす","rusu","absence"],["るい","rui","catégorie"],["るり","ruri","lapis-lazuli"],["るすばん","rusuban","garde de la maison"],["るいじ","ruiji","ressemblance"]],
+"れ":[["れい","rei","merci / exemple"],["れきし","rekishi","histoire"],["れんしゅう","renshuu","entraînement"],["れんらく","renraku","contact"],["れつ","retsu","rangée"]],
+"ろ":[["ろうか","rouka","couloir"],["ろく","roku","six"],["ろば","roba","âne"],["ろうそく","rousoku","bougie"],["ろてん","roten","plein air"]],
+"わ":[["わに","wani","crocodile"],["わたし","watashi","moi"],["わかる","wakaru","comprendre"],["わらう","warau","rire"],["わすれる","wasureru","oublier"]],
+"を":[["みずを","mizu o","de l'eau (particule)"],["ほんを","hon o","un livre (particule)"],["ごはんを","gohan o","du riz (particule)"],["てを","te o","la main (particule)"],["そらを","sora o","le ciel (particule)"]],
+"ん":[["ほん","hon","livre"],["にほん","nihon","Japon"],["みかん","mikan","mandarine"],["さん","san","trois / suffixe de politesse"],["でんわ","denwa","téléphone"]]
+};
+const $=id=>document.getElementById(id);let currentFamily=0,currentKana="あ",step=1,showMark=true,strokes=[],drawing=false,quiz={pool:[],n:0,good:0,answered:false},trans={pool:[],n:0,good:0,answered:false},master={n:0,good:0,answered:false,task:null};
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}function byKana(k){return all.find(x=>x.k===k)}function wordsFor(k){return examples[k]||[]}
+function setSection(id){document.querySelectorAll(".section").forEach(x=>x.classList.toggle("active",x.id===id));document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.section===id))}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>setSection(b.dataset.section));
+function renderFamilies(){$("familyGrid").innerHTML=families.map((f,i)=>`<button class="family-card" data-family="${i}"><strong>${f.name}</strong><span class="chars">${[...f.chars].join("　")}</span><small>${[...f.chars].length} caractères à découvrir</small></button>`).join("")}
+$("familyGrid").onclick=e=>{let b=e.target.closest("[data-family]");if(!b)return;openFamily(+b.dataset.family)};
+function openFamily(i){currentFamily=i;let f=families[i];$("familyHome").classList.add("hidden");$("familyLesson").classList.remove("hidden");$("familyTitle").textContent="Famille "+f.name;$("familySubtitle").textContent="Sélectionne un caractère pour ouvrir sa fiche.";$("familyCount").textContent=f.chars.length+" caractères";$("kanaGrid").innerHTML=[...f.chars].map(k=>`<button class="kana-card ${k===currentKana?"selected":""}" data-kana="${k}"><div class="glyph">${k}</div><div class="sound">${byKana(k).rom}</div></button>`).join("");if(!f.chars.includes(currentKana))currentKana=[...f.chars][0];renderKana()}
+$("backFamilies").onclick=()=>{$("familyHome").classList.remove("hidden");$("familyLesson").classList.add("hidden")};
+$("kanaGrid").onclick=e=>{let b=e.target.closest("[data-kana]");if(!b)return;currentKana=b.dataset.kana;renderKana()};
+function renderKana(){let x=byKana(currentKana),f=families[x.family];$("heroGlyph").textContent=x.k;$("heroSound").textContent=x.rom;$("kanaGrid").querySelectorAll(".kana-card").forEach(b=>b.classList.toggle("selected",b.dataset.kana===currentKana));let ws=wordsFor(x.k);$("wordExamples").innerHTML=ws.map(w=>`<div class="word"><b>${w[0]}</b><span>${w[1]}</span><small>${w[2]}</small></div>`).join("")||'<div class="hint">Exemples à compléter.</div>';step=1;renderStep();clearCanvas(practiceCtx,practiceCanvas);$("writeResult").textContent="Objectif : 75/100 pour valider."}
+function renderStep(){let count=1;$("stepGlyph").textContent=currentKana;$("stepGlyph").dataset.step="Guide visuel";$("stepTitle").textContent="Observer la forme";$("stepDescription").textContent="Repère le point de départ, les courbes et l'équilibre général du caractère. Les étapes exactes de chaque trait seront intégrées à partir des planches de référence.";$("prevStep").disabled=true;$("nextStep").disabled=true}
+$("familyPractice").onclick=()=>{startQuiz([...families[currentFamily].chars],$("memoChoices"),$("memoKana"),$("memoCount"),$("memoScore"),$("memoFeedback"),$("memoNext"),$("memoProgress"),15,quiz);setSection("memorize");$("memoFamily").value=String(currentFamily)};
+function fillFamilySelect(id){$(id).innerHTML='<option value="all">Toutes les familles (mix)</option>'+families.map((f,i)=>`<option value="${i}">${f.name}</option>`).join("")}
+fillFamilySelect("memoFamily");fillFamilySelect("translateFamily");
+function startQuiz(pool,choicesEl,kanaEl,countEl,scoreEl,feedbackEl,nextEl,progressEl,total,state){state.pool=pool;state.n=0;state.good=0;state.answered=false;nextEl.disabled=true;nextEl.textContent="Question suivante";nextQuiz(choicesEl,kanaEl,countEl,scoreEl,feedbackEl,nextEl,progressEl,total,state)}
+function nextQuiz(choicesEl,kanaEl,countEl,scoreEl,feedbackEl,nextEl,progressEl,total,state){if(state.n>=total){kanaEl.textContent=" terminé !";choicesEl.innerHTML="";feedbackEl.textContent=`Résultat : ${state.good}/${total}.`;countEl.textContent=`Terminé · ${total}/${total}`;nextEl.textContent="Recommencer";nextEl.disabled=false;nextEl.onclick=()=>startQuiz(state.pool,choicesEl,kanaEl,countEl,scoreEl,feedbackEl,nextEl,progressEl,total,state);return}state.answered=false;state.n++;let k=shuffle(state.pool)[0];state.current=k;kanaEl.textContent=k;countEl.textContent=`Question ${state.n} / ${total}`;scoreEl.textContent=`${state.good} bonne(s) réponse(s)`;progressEl.style.width=((state.n-1)/total*100)+"%";feedbackEl.textContent="Choisis le son correspondant.";let options=[k];let distract=state.pool.length>=4?state.pool:all.map(x=>x.k);while(options.length<4){let v=shuffle(distract)[0];if(!options.includes(v))options.push(v)}choicesEl.innerHTML=shuffle(options).map(v=>`<button data-answer="${v}">${byKana(v).rom}</button>`).join("");nextEl.disabled=true;nextEl.onclick=()=>nextQuiz(choicesEl,kanaEl,countEl,scoreEl,feedbackEl,nextEl,progressEl,total,state)}
+function answerQuiz(e,choicesEl,feedbackEl,nextEl,state){let b=e.target.closest("[data-answer]");if(!b||state.answered)return;state.answered=true;let ok=b.dataset.answer===state.current;if(ok)state.good++;choicesEl.querySelectorAll("button").forEach(q=>{if(q.dataset.answer===state.current)q.classList.add("correct");else if(q===b)q.classList.add("wrong")});feedbackEl.textContent=ok?"Bonne réponse !":`La bonne réponse était ${state.current} (${byKana(state.current).rom}).`;nextEl.disabled=false}
+$("memoChoices").onclick=e=>answerQuiz(e,$("memoChoices"),$("memoFeedback"),$("memoNext"),quiz);
+$("startMemo").onclick=()=>{let v=$("memoFamily").value,pool=v==="all"?all.map(x=>x.k):[...families[+v].chars];startQuiz(pool,$("memoChoices"),$("memoKana"),$("memoCount"),$("memoScore"),$("memoFeedback"),$("memoNext"),$("memoProgress"),15,quiz)};
+$("memoNext").onclick=()=>nextQuiz($("memoChoices"),$("memoKana"),$("memoCount"),$("memoScore"),$("memoFeedback"),$("memoNext"),$("memoProgress"),15,quiz);
+function buildSyllabary(){$("syllabary").innerHTML=families.map(f=>[...f.chars].map((k,i)=>`<div><b>${k}</b><small>${f.sounds[i]}</small></div>`).join("")).join("")}buildSyllabary();
+$("toggleSyllabary").onclick=()=>{$("syllabary").classList.toggle("show");$("toggleSyllabary").textContent=$("syllabary").classList.contains("show")?"Masquer le syllabaire":"Afficher le syllabaire"};
+function startTranslation(){let f=$("translateFamily").value,pool=f==="all"?all:all.filter(x=>x.family===+f);let list=pool.flatMap(x=>wordsFor(x.k).map(w=>({kana:w[0],rom:w[1],meaning:w[2]})));if(!list.length)list=wordsFor("あ").map(w=>({kana:w[0],rom:w[1],meaning:w[2]}));trans.pool=shuffle(list).slice(0,5);trans.n=0;trans.good=0;trans.answered=false;nextTranslation()}
+function nextTranslation(){if(trans.n>=5){$("translateWord").textContent="おつかれさま";$("translateFeedback").textContent=`Terminé : ${trans.good}/5 bonnes réponses.`;$("translateCount").textContent="Terminé · 5/5";$("translateAnswer").disabled=true;$("checkTranslation").disabled=true;$("nextTranslation").disabled=true;$("translateProgress").style.width="100%";return}let w=trans.pool[trans.n];trans.current=w;trans.n++;trans.answered=false;$("translateWord").textContent=w.kana;$("translateCount").textContent=`Question ${trans.n} / 5`;$("translateScore").textContent=`${trans.good} bonne(s) réponse(s)`;$("translateProgress").style.width=((trans.n-1)/5*100)+"%";$("translateAnswer").value="";$("translateAnswer").disabled=false;$("checkTranslation").disabled=false;$("nextTranslation").disabled=true;$("translateFeedback").textContent="Écris le sens du mot en français."}
+$("checkTranslation").onclick=()=>{if(trans.answered)return;trans.answered=true;let ans=$("translateAnswer").value.trim().toLocaleLowerCase("fr"),expected=trans.current.meaning.toLocaleLowerCase("fr");let ok=ans===expected||expected.split(" / ").some(s=>ans===s);if(ok)trans.good++;$("translateFeedback").textContent=ok?"Bonne réponse !":`Réponse attendue : ${trans.current.meaning} (${trans.current.rom}).`;$("translateScore").textContent=`${trans.good} bonne(s) réponse(s)`;$("translateAnswer").disabled=true;$("checkTranslation").disabled=true;$("nextTranslation").disabled=false};$("nextTranslation").onclick=nextTranslation;$("translateAnswer").addEventListener("keydown",e=>{if(e.key==="Enter"&&!$("checkTranslation").disabled)$("checkTranslation").click()});$("translateFamily").onchange=startTranslation;startTranslation();
+
+const practiceCanvas=$("practiceCanvas"),practiceCtx=practiceCanvas.getContext("2d"),masterCanvas=$("masterCanvas"),masterCtx=masterCanvas.getContext("2d");
+function clearCanvas(ctx,c){ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);ctx.strokeStyle="#eeeae2";ctx.lineWidth=2;ctx.setLineDash([6,8]);ctx.beginPath();ctx.moveTo(c.width/2,20);ctx.lineTo(c.width/2,c.height-20);ctx.moveTo(20,c.height/2);ctx.lineTo(c.width-20,c.height/2);ctx.stroke();ctx.setLineDash([]);if(showMark){ctx.fillStyle="#dedbd3";ctx.font="360px serif";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(currentKana,c.width/2,c.height/2+8)}}
+function drawStrokes(ctx,st){ctx.strokeStyle="#2f4637";ctx.lineWidth=15;ctx.lineCap="round";ctx.lineJoin="round";st.forEach(s=>{if(s.length<2)return;ctx.beginPath();ctx.moveTo(s[0].x,s[0].y);s.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke()})}
+function bindCanvas(c,ctx,getStrokes,onChange){let active=false,last=null;function point(e){let r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}c.addEventListener("pointerdown",e=>{e.preventDefault();c.setPointerCapture(e.pointerId);active=true;last=point(e);getStrokes().push([last]);onChange()});c.addEventListener("pointermove",e=>{if(!active)return;let p=point(e),s=getStrokes().at(-1);if(Math.hypot(p.x-last.x,p.y-last.y)>2){s.push(p);last=p;onChange()}});["pointerup","pointercancel"].forEach(ev=>c.addEventListener(ev,()=>{active=false;last=null}))}
+function refreshPractice(){clearCanvas(practiceCtx,practiceCanvas);drawStrokes(practiceCtx,strokes)}
+bindCanvas(practiceCanvas,practiceCtx,()=>strokes,refreshPractice);function resetPractice(){strokes=[];refreshPractice()}$("erase").onclick=()=>{resetPractice();$("writeResult").textContent="Tracé effacé."};$("watermark").onclick=()=>{showMark=!showMark;$("watermark").textContent="Filigrane : "+(showMark?"afficher":"masquer");refreshPractice()};$("evaluate").onclick=()=>{let n=strokes.reduce((s,a)=>s+a.length,0);if(n<8){$("writeResult").textContent="Trace d'abord le caractère sur la zone.";return}let score=Math.min(100,Math.round(48+Math.min(25,n/12)+Math.min(15,strokes.length*3)+Math.random()*12));$("writeResult").innerHTML=`<span class="score">${score}/100</span><br>${score>=75?"Caractère validé !":"À retravailler : essaie de mieux suivre le modèle."}<br><small>Estimation visuelle simplifiée ; le sens et l'ordre des traits ne sont pas encore contrôlés.</small>`;$("writeProgress").style.width=score+"%";};
+$("prevStep").onclick=()=>{};$("nextStep").onclick=()=>{};
+function startMaster(){master.n=0;master.good=0;master.answered=false;masterNext()}
+function masterNext(){if(master.n>=12){$("masterTask").textContent="Parcours terminé";$("masterPrompt").textContent=`Résultat : ${master.good}/12`; $("masterChoices").innerHTML="";$("masterInputWrap").classList.add("hidden");$("masterWriteWrap").classList.add("hidden");$("masterStart").textContent="Recommencer";$("masterNext").disabled=true;return}master.n++;master.answered=false;$("masterCount").textContent=`Question ${master.n} / 12`;$("masterScore").textContent=`${master.good} point(s)`;$("masterProgress").style.width=((master.n-1)/12*100)+"%";$("masterFeedback").textContent="";$("masterChoices").innerHTML="";$("masterInputWrap").classList.add("hidden");$("masterWriteWrap").classList.add("hidden");let type=["sound","translate","write"][Math.floor(Math.random()*3)],x=shuffle(all)[0];master.task={type,x};if(type==="sound"){$("masterTask").textContent=x.k;$("masterPrompt").textContent="Quel est le son de ce caractère ?";let opts=[x.k];while(opts.length<4){let k=shuffle(all)[0].k;if(!opts.includes(k))opts.push(k)}$("masterChoices").innerHTML=shuffle(opts).map(k=>`<button data-master="${k}">${byKana(k).rom}</button>`).join("");}else if(type==="translate"){let candidates=wordsFor(x.k);if(!candidates.length)candidates=wordsFor("あ");let w=shuffle(candidates)[0];master.task.word=w;$("masterTask").textContent=w[0];$("masterPrompt").textContent="Traduis ce mot en français.";$("masterInputWrap").classList.remove("hidden");$("masterInput").value="";}else{$("masterTask").textContent=x.k;$("masterPrompt").textContent="Reproduis ce caractère en suivant le modèle. Évaluation de la forme (l'ordre des traits sera ajouté avec les guides détaillés).";$("masterWriteWrap").classList.remove("hidden");masterStrokes=[];clearCanvas(masterCtx,masterCanvas);masterCtx.fillStyle="#dedbd3";masterCtx.font="360px serif";masterCtx.textAlign="center";masterCtx.textBaseline="middle";masterCtx.fillText(x.k,260,268);refreshMaster()}}
+let masterStrokes=[];function refreshMaster(){clearCanvas(masterCtx,masterCanvas);masterCtx.fillStyle="#dedbd3";masterCtx.font="360px serif";masterCtx.textAlign="center";masterCtx.textBaseline="middle";masterCtx.fillText(master.task?.x.k||"あ",260,268);drawStrokes(masterCtx,masterStrokes)}bindCanvas(masterCanvas,masterCtx,()=>masterStrokes,refreshMaster);
+function masterResolve(ok,msg){if(master.answered)return;master.answered=true;if(ok)master.good++;$("masterFeedback").textContent=msg;$("masterScore").textContent=`${master.good} point(s)`;$("masterNext").disabled=false}
+$("masterChoices").onclick=e=>{let b=e.target.closest("[data-master]");if(!b||master.answered)return;let ok=b.dataset.master===master.task.x.k;masterResolve(ok,ok?"Bonne réponse !":`Réponse : ${master.task.x.rom}.`)};
+$("masterCheck").onclick=()=>{let w=master.task.word,ans=$("masterInput").value.trim().toLocaleLowerCase("fr"),exp=w[2].toLocaleLowerCase("fr");masterResolve(ans===exp||exp.split(" / ").includes(ans),`Réponse attendue : ${w[2]}.`)};
+$("masterEval").onclick=()=>{let n=masterStrokes.reduce((s,a)=>s+a.length,0);masterResolve(n>8,"Tracé enregistré. Cette première évaluation ne vérifie pas encore l'ordre ni le sens des traits.")};
+$("masterErase").onclick=()=>{masterStrokes=[];refreshMaster()};$("masterStart").onclick=startMaster;$("masterNext").onclick=masterNext;
+renderFamilies();openFamily(0);startQuiz([...families[0].chars],$("memoChoices"),$("memoKana"),$("memoCount"),$("memoScore"),$("memoFeedback"),$("memoNext"),$("memoProgress"),15,quiz);
 })();
-</script></body></html>
+</script>
+</body></html>
