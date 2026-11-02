@@ -54,6 +54,19 @@ button:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
 .choices button { font-size:20px; min-height:58px; }
 .correct { background:light-dark(#E8F4ED,#233A30); border-color:var(--good); }
 .wrong { background:light-dark(#FBEAEA,#452A2D); border-color:var(--bad); }
+.row { display:flex; gap:12px; }
+.row>* { flex:1; }
+.lesson { width:100%; text-align:left; margin:0; padding:13px 15px; line-height:1.5; }
+.lesson strong { display:block; margin-bottom:7px; }
+.lesson small { display:block; color:var(--muted); letter-spacing:.12em; line-height:1.8; }
+#lessonList { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:10px; margin:12px 0 16px; }
+.word { font-size:32px; text-align:center; margin:16px 0; letter-spacing:.18em; line-height:1.6; }
+canvas { width:100%; height:auto; display:block; background:#FFFFFF; border:1px solid #DDD; border-radius:12px; touch-action:none; }
+.score { font-size:42px; font-weight:750; }
+.bar { height:7px; background:var(--line); border-radius:20px; overflow:hidden; }
+.bar i { display:block; height:100%; background:var(--accent); }
+.note { font-size:12px; color:var(--muted); line-height:1.5; }
+.word { font-size:32px; text-align:center; margin:8px; }
 .feedback { min-height:25px; font-size:14px; margin:8px 0; }
 .spaced { margin-top:14px; }
 .account-note { display:flex; align-items:flex-start; gap:9px; background:var(--site-secondary); color:var(--site-on-secondary); border-radius:12px; padding:11px 13px; font-size:12px; line-height:1.45; margin:12px 0 16px; }
@@ -94,8 +107,8 @@ function showTab(t){['lessons','quiz','write','review'].forEach(x=>$(x).classLis
 document.querySelector('nav').addEventListener('click',e=>{let b=e.target.closest('[data-tab]');if(b)showTab(b.dataset.tab)});
 function renderLessons(){$('lessonList').innerHTML=families.map((f,i)=>`<button class="lesson" data-lesson="${i}"><strong>${i+1}. ${f[0]}</strong><small>${[...f[1]].join('　')}</small></button>`).join('');}
 $('lessonList').addEventListener('click',e=>{let b=e.target.closest('[data-lesson]');if(!b)return;let i=+b.dataset.lesson,f=families[i];lessonPool=all.filter(x=>f[1].includes(x.k)).map(x=>x.k);$('lessonDetail').classList.remove('hidden');$('lessonDetail').innerHTML=`<b>Leçon ${i+1} — ${f[0]}</b><div class="word">${[...f[1]].join('　')}</div><p class="muted">${f[2]}</p><hr style="border:0;border-top:1px solid var(--line)"><b>Lis ce mot</b><div class="word">${f[3]}</div><div style="text-align:center"><b>${f[4]}</b><div class="muted">${f[5]}</div></div><p class="muted">Décompose : ${[...f[3]].join(' + ')}</p><div class="row"><button id="lessonWrite">Écrire</button><button class="primary" id="lessonQuiz">M'entraîner</button></div>`;$('lessonWrite').onclick=()=>{writeIndex=all.findIndex(x=>x.k===f[1][0]);updateWrite();showTab('write')};$('lessonQuiz').onclick=()=>{showTab('quiz');newQuiz(lessonPool)};});
-function newQuiz(pool=all.map(x=>x.k)){lessonPool=pool;answered=false;quizChar=pool[Math.floor(Math.random()*pool.length)];quizNum++;$('quizKana').textContent=quizChar;$('quizCount').textContent='Question '+quizNum;$('quizFeedback').textContent='';$('nextQuestion').disabled=true;let options=[quizChar];while(options.length<4){let k=all[Math.floor(Math.random()*all.length)].k;if(!options.includes(k))options.push(k)}options.sort(()=>Math.random()-.5);$('choices').innerHTML=options.map(k=>`<button data-k="${k}">${all.find(x=>x.k===k).rom}</button>`).join('');}
-$('choices').addEventListener('click',e=>{let b=e.target.closest('[data-k]');if(!b||answered)return;answered=true;let correct=b.dataset.k===quizChar;if(correct)quizGood++;$('quizScore').textContent=quizGood+' bonne(s) réponse(s)';$('quizFeedback').textContent=correct?'Bonne réponse !':'Pas tout à fait : '+quizChar+' se lit '+all.find(x=>x.k===quizChar).rom+'.';$('choices').querySelectorAll('button').forEach(x=>{if(x.dataset.k===quizChar)x.classList.add('correct');else if(x===b)x.classList.add('wrong')});$('nextQuestion').disabled=false;});$('nextQuestion').onclick=()=>newQuiz(lessonPool);
+function newQuiz(pool=all.map(x=>x.k)){lessonPool=pool;answered=false;quizChar=pool[Math.floor(Math.random()*pool.length)];quizNum++;$('quizKana').textContent=quizChar;$('quizCount').textContent='Question '+quizNum;$('quizFeedback').textContent='';$('nextQuestion').disabled=true;let options=[quizChar],usedSounds=new Set([all.find(x=>x.k===quizChar).rom]);while(options.length<4){let k=all[Math.floor(Math.random()*all.length)].k,rom=all.find(x=>x.k===k).rom;if(!options.includes(k)&&!usedSounds.has(rom)){options.push(k);usedSounds.add(rom)}}options.sort(()=>Math.random()-.5);$('choices').innerHTML=options.map(k=>`<button data-k="${k}">${all.find(x=>x.k===k).rom}</button>`).join('');}
+ $('choices').addEventListener('click',e=>{let b=e.target.closest('[data-k]');if(!b||answered)return;answered=true;let correct=b.dataset.k===quizChar;if(correct)quizGood++;$('quizScore').textContent=quizGood+' bonne(s) réponse(s)';$('quizFeedback').textContent=correct?'Bonne réponse !':'Pas tout à fait : '+quizChar+' se lit '+all.find(x=>x.k===quizChar).rom+'.';$('choices').querySelectorAll('button').forEach(x=>{if(x.dataset.k===quizChar)x.classList.add('correct');else if(x===b)x.classList.add('wrong')});$('nextQuestion').disabled=false;});$('nextQuestion').onclick=()=>newQuiz(lessonPool);
 function current(){return all[writeIndex]}
 const pad=$('pad'),ctx=pad.getContext('2d');
 function drawPad(){ctx.clearRect(0,0,600,600);ctx.fillStyle='#fff';ctx.fillRect(0,0,600,600);ctx.strokeStyle='#e7e7e7';ctx.lineWidth=2;ctx.setLineDash([5,8]);ctx.beginPath();ctx.moveTo(300,25);ctx.lineTo(300,575);ctx.moveTo(25,300);ctx.lineTo(575,300);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#dedede';ctx.font='390px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(current().k,300,310);ctx.strokeStyle='#292929';ctx.lineWidth=15;ctx.lineCap='round';ctx.lineJoin='round';strokes.forEach(s=>{if(s.length<2)return;ctx.beginPath();ctx.moveTo(s[0].x,s[0].y);s.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke()});}
