@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
   <div class="app-shell">
@@ -28,7 +28,7 @@
       </div>
     </aside>
     <main class="main-content">
-      <header class="topbar"><div class="breadcrumb">Mon apprentissage <span>/</span> <b id="crumb">Vue d’ensemble</b></div><div class="top-actions"><div class="streak"><span>♨</span> <b id="streak">0</b><small>jours</small></div><button class="icon-button" aria-label="Options">⚙</button></div></header>
+      <header class="topbar"><div class="breadcrumb">Mon apprentissage <span>/</span> <b id="crumb">Vue d’ensemble</b></div><div class="top-actions"><button class="syllabary-button" id="openSyllabary">あ Syllabaire</button><div class="streak"><span>♨</span> <b id="streak">0</b><small>jours</small></div><button class="icon-button" aria-label="Options">⚙</button></div></header>
       <section class="view active" id="view-accueil">
         <div class="welcome-row"><div><div class="eyebrow"><span class="eyebrow-dot"></span> TON VOYAGE COMMENCE ICI</div><h1>こんにちは<span class="heading-period">.</span></h1><p class="intro">Prêt·e à faire connaissance avec les hiragana ?<br>À ton rythme, un caractère après l’autre.</p></div><div class="welcome-art" aria-hidden="true"><span class="art-kana kana1">あ</span><span class="art-kana kana2">の</span><span class="art-kana kana3">ゆ</span><span class="art-sun"></span><span class="art-stem"></span></div></div>
         <div class="section-heading"><div><h2>Reprendre mon apprentissage</h2><p>Chaque petit pas compte.</p></div><button class="text-button" data-go="lecons">Explorer les familles <span>→</span></button></div>
@@ -44,7 +44,8 @@
       <section class="view" id="view-tableau"><div class="page-intro"><div class="eyebrow"><span class="eyebrow-dot"></span> LES 46 CARACTÈRES</div><h1>Tableau des kana<span class="heading-period">.</span></h1><p>Touche une carte pour voir son caractère et entendre sa prononciation.</p></div><div class="kana-board" id="kanaBoard"></div></section>
     </main>
   </div>
+  <dialog class="syllabary-dialog" id="syllabaryDialog" aria-labelledby="syllabaryTitle"><div class="syllabary-dialog-head"><div><div class="eyebrow"><span class="eyebrow-dot"></span> AIDE-MÉMOIRE</div><h2 id="syllabaryTitle">Syllabaire hiragana</h2><p>Repère chaque son à l’intersection de sa ligne et de sa voyelle.</p></div><form method="dialog"><button class="icon-button" aria-label="Fermer le syllabaire">×</button></form></div><div id="syllabaryBody"></div></dialog>
   <div class="toast" id="toast" role="status"></div>
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>
